@@ -18,7 +18,9 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files in production
-app.use(express.static(join(__dirname, 'dist')));
+const distPath = join(__dirname, 'dist');
+console.log(`📂 Serving static files from: ${distPath}`);
+app.use(express.static(distPath));
 
 // Database setup
 const db = new Database(join(__dirname, 'planit.db'));
@@ -175,7 +177,13 @@ app.delete('/api/todos/:id', authenticate, (req, res) => {
 
 // SPA fallback — serve index.html for any non-API route (production)
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, 'dist', 'index.html'));
+  const indexFile = join(__dirname, 'dist', 'index.html');
+  res.sendFile(indexFile, (err) => {
+    if (err) {
+      console.error(`❌ Error sending index.html: ${err.message}`);
+      res.status(404).send('PlanIt Server: Frontend build not found. Please run "npm run build" first.');
+    }
+  });
 });
 
 app.listen(PORT, () => {
