@@ -15,10 +15,10 @@
     "better-sqlite3": "^9.4.3",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "vite": "^5.0.0"
   },
   "devDependencies": {
-    "vite": "^5.0.0",
     "concurrently": "^8.2.2"
   }
 }
