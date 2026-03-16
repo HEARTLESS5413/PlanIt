@@ -7,7 +7,7 @@
     "dev": "concurrently \"node server.js\" \"vite --port 5173\"",
     "server": "node server.js",
     "client": "vite --port 5173",
-    "build": "npx vite build",
+    "build": "node_modules/.bin/vite build",
     "start": "node server.js"
   },
   "dependencies": {
