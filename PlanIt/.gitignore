@@ -1,7 +1,4 @@
 node_modules/
-planit.db
-planit.db-shm
-planit.db-wal
 dist/
 .env
 .env.local

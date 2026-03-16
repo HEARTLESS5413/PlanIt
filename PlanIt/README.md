@@ -20,7 +20,7 @@ A modern, beautiful to-do list and day planner with authentication, time-based r
 | Frontend | HTML, CSS, Vanilla JavaScript |
 | Build | Vite 5 |
 | Backend | Express.js |
-| Database | SQLite (better-sqlite3) |
+| Database | PostgreSQL |
 | Auth | bcrypt + JWT |
 
 ## 🚀 Getting Started
@@ -28,6 +28,7 @@ A modern, beautiful to-do list and day planner with authentication, time-based r
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) v18+ installed
+- [PostgreSQL](https://www.postgresql.org/) installed locally (or a cloud database URL)
 
 ### Installation
 
@@ -38,6 +39,10 @@ cd PlanIt
 
 # Install dependencies
 npm install
+
+# Set up environment variable (create .env file or export)
+# For local PostgreSQL:
+export DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/planit
 
 # Start development server
 npm run dev
@@ -61,7 +66,7 @@ npm start
 ```
 PlanIt/
 ├── index.html          # Main HTML with loading screen & mobile nav
-├── server.js           # Express API server (auth + CRUD)
+├── server.js           # Express API server (auth + CRUD) — PostgreSQL
 ├── vite.config.js      # Vite dev server config
 ├── package.json
 ├── .gitignore
@@ -72,20 +77,44 @@ PlanIt/
     └── reminders.js    # Browser notification system
 ```
 
-## 🌐 Deployment
+## 🌐 Deployment on Render
 
-### Deploy to Render (Recommended)
+### Step 1: Create a PostgreSQL Database on Render
 
-1. Push code to GitHub
-2. Go to [render.com](https://render.com) → New **Web Service**
-3. Connect your GitHub repo
-4. Settings:
+1. Go to [render.com](https://render.com) → **Dashboard**
+2. Click **New +** → **PostgreSQL**
+3. Fill in:
+   - **Name:** `planit-db`
+   - **Database:** `planit`
+   - **User:** `planit_user`
+   - **Region:** Choose closest to your users
+   - **Plan:** **Free** (90-day) or **Starter** ($7/mo for persistent)
+4. Click **Create Database**
+5. Once created, copy the **Internal Database URL** (starts with `postgresql://...`)
+
+### Step 2: Deploy the Web Service
+
+1. Push your code to GitHub
+2. On Render → click **New +** → **Web Service**
+3. Connect your GitHub repo (`HEARTLESS5413/PlanIt`)
+4. Configure settings:
+   - **Name:** `planit`
+   - **Runtime:** `Node`
    - **Build Command:** `npm install && npm run build`
    - **Start Command:** `npm start`
-   - **Environment Variables:**
-     - `JWT_SECRET` = (any secure random string)
-     - `PORT` = `3001` (or leave for Render to auto-assign)
-5. Deploy!
+5. Add **Environment Variables:**
+   - `DATABASE_URL` = *(paste the Internal Database URL from Step 1)*
+   - `JWT_SECRET` = *(any secure random string, e.g., `mySecureJwtSecret2024!`)*
+   - `NODE_ENV` = `production`
+6. Click **Deploy Web Service**
+
+### Step 3: Verify
+
+- Wait for the build to complete (usually 2-3 minutes)
+- Visit your Render URL (e.g., `https://planit-xxxx.onrender.com`)
+- Register a new account and create some tasks!
+
+> **Note:** On the Free tier, Render spins down your service after 15 minutes of inactivity. The first request after that takes ~30 seconds. Upgrade to Starter ($7/mo) for always-on service.
 
 ## 📄 License
 
